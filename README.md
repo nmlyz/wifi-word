@@ -12,7 +12,7 @@ A tiny program that writes one word for your Wi-Fi to a file. The word is three 
 python3 main.py
 ```
 
-It writes the word to `/output/entry.txt` (or `$MAKEFUN_OUTPUT_DIR/entry.txt` when set). Standard library only, no network, deterministic: two runs produce byte-identical output.
+It writes the word to `/output/entry.txt` (or `$MAKEFUN_OUTPUT_DIR/entry.txt` when set). Standard library only, no network, deterministic: two runs produce byte-identical output. Before writing, it checks the word is a single word of 1–20 characters, then flushes the file to disk.
 
 ## The word
 

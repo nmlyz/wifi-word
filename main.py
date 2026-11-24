@@ -7,18 +7,32 @@ the same single word, with no trailing newline.
 
 import os
 
-LINE = "Cat"
+WORD = "Cat"
 
 
-def main():
-    assert 1 <= len(LINE) <= 20, "entry must be 1-20 characters"
-    assert LINE.strip() == LINE and " " not in LINE, "entry must be a single word"
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
+def validate(word):
+    """The entry must be a single word, 1-20 characters."""
+    if not 1 <= len(word) <= 20:
+        raise ValueError("entry must be 1-20 characters")
+    if word.strip() != word or " " in word:
+        raise ValueError("entry must be a single word")
+    return word
+
+
+def write_entry(word, out_dir):
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "entry.txt")
     with open(path, "w", encoding="utf-8", newline="") as f:
-        f.write(LINE)
+        f.write(word)
+        f.flush()
+        os.fsync(f.fileno())
     os.chmod(path, 0o644)
+    return path
+
+
+def main():
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
+    write_entry(validate(WORD), out_dir)
 
 
 if __name__ == "__main__":
